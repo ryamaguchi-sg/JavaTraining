@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サービス管理システム - 加入者情報編集</title>
+
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="inner">
+            <h1>
+                <span class="title">加入者情報編集</span>
+            </h1>
+        </div>
+    </header>
+    <div class="main-wrapper">
+        <aside>
+            <div class="inner">
+                <ol>
+                    <li><a href="kanyu_search.html">加入者情報</a></li>
+                    <li><a href="ryokin_search.html">料金情報</a></li>
+                </ol>
+            </div>
+        </aside>
+        <main>
+            <div class="inner">
+                
+<form action="kanyu_edit.html" method="post">
+    <form action="kanyu_result.html" method="post">
+        <div class="form_wrapper">
+            <div class="label">
+                <label for="kanyuid">加入者ID</label>
+            </div>
+            <div class="input_item">
+                <input type="text" id="kanyuid" name="kanyuid">
+            </div>
+            <div class="label">
+                <label for="fullname">氏名</label>
+            </div>
+            <div class="input_item">
+                <input type="text" id="fullname" name="fullname" maxlength="16" style="width:16em;">
+            </div>
+            <div class="label">
+                <label for="address">住所</label>
+            </div>
+            <div class="input_item">
+                <input type="text" id="address" name="address" maxlength="128" style="width:32em;">
+            </div>
+            <div class="label">
+                <label for="joining_date">加入日</label>
+            </div>
+            <div class="input_item">
+                <input type="date" id="joining_date" name="joining_date">
+            </div>
+            <div class="label">
+                <label for="retired_date">解約日</label>
+            </div>
+            <div class="input_item">
+                <input type="date" id="retired_date" name="retired_date">
+            </div>
+            <div class="label">
+                <label for="payment_method">決済方法</label>
+            </div>
+            <div class="input_item">
+                <select id="payment_method" name="payment_method">
+                    <option value="credit">クレジット</option>
+                    <option value="banktransfer">銀行振込</option>
+                </select>
+            </div>
+
+            <div class="label">
+                <label>適用料金</label>
+            </div>
+            <div class="input_item">
+                <div>
+                    <label><input type="checkbox" name="ryokin" value="00001" checked> 基本料金</label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" name="ryokin" value="00002"> オプション料金A
+                        <input type="date" name="ryokin_00002_start" id="ryokin_00002_start"> ～
+                        <input type="date" name="ryokin_00002_end" id="ryokin_00002_end">
+                    </label>
+                </div>
+            </div>
+            
+            <div class="label">
+            </div>            
+            <div class="input_item">
+                <input type="submit" value="決定">
+                <a href="">キャンセル</a>
+            </div>    
+        </div>
+    </form>
+</form>
+    
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

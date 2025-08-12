@@ -1,0 +1,26 @@
+{% extends "_base.html" %}
+{% set title = '加入者情報検索' %}
+
+{% block main %}
+<form action="kanyu_result.html" method="post">
+    <div class="form_wrapper">
+        <div class="label">
+            <label for="cond_id">メールアドレス</label>
+        </div>
+        <div class="input_item">
+            <input type="text" id="mail" name="mail">
+        </div>
+        <div class="label">
+            <label for="cond_name">氏名</label>
+        </div>
+        <div class="input_item">
+            <input type="text" id="name" name="name">
+        </div>
+        <div class="label">
+        </div>
+        <div class="input_item">
+            <input type="submit" value="検索">
+        </div>    
+    </div>
+</form>
+{% endblock %}

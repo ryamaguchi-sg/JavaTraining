@@ -1,0 +1,39 @@
+{% extends "_base.html" %}
+{% set title = '加入者情報一覧' %}
+
+{% block main %}
+<div class="button_layout">
+    <div>
+        <a href="kanyu_search.html">＜ 戻る</a>
+    </div>
+</div>
+<table>
+    <tr>
+        <th>加入者ID</th>
+        <th>メールアドレス</th>
+        <th>氏名</th>
+        <th>住所</th>
+        <th>加入日</th>
+        <th>解約日</th>
+        <th>決済方法</th>
+    </tr>
+    <tr>
+        <td><a href="kanyu_edit.html">00001</a></td>
+        <td>giken-taro@s-giken.com</td>
+        <td>技研 太郎</td>
+        <td>東京都・・・</td>
+        <td>2023/01/01</td>
+        <td>―</td>
+        <td>クレジット</td>
+    </tr>
+    <tr>
+        <td><a href="kanyu_edit.html">00002</a></td>
+        <td>giken-hanako@s-giken.com</td>
+        <td>技研 花子</td>
+        <td>東京都・・・</td>
+        <td>2023/01/01</td>
+        <td>―</td>
+        <td>銀行振込</td>
+    </tr>
+</table>
+{% endblock %}

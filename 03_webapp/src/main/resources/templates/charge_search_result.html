@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/app :: layout('料金検索結果', ~{::content}, 'charge')}" lang="ja">
+<div th:fragment="content">
+    <table class="table  table-striped">
+        <thead>
+            <tr>
+                <td scppe="col">料金ID</td>
+                <td scppe="col">料金名</td>
+                <td scppe="col">料金種別</td>
+                <td scppe="col">料金</td>
+                <td scppe="col">適用開始日</td>
+                <td scppe="col">適用終了日</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:if="${!#lists.isEmpty(result)}" th:each="row : ${result}">
+                <td scope="row">
+                    <a th:href="@{/charge/edit/{id}(id=${row.chargeId})}" th:text="${row.chargeId}"></a>
+                </td>
+                <td th:text="${row.name}"></td>
+                <td th:text="${row.chargeType}"></td>
+                <td th:text="${row.amount}"></td>
+                <td th:text="${#dates.format(row.startDate, 'yyyy/MM/dd')}"></td>
+                <td th:text="${#dates.format(row.endDate, 'yyyy/MM/dd')}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</html>

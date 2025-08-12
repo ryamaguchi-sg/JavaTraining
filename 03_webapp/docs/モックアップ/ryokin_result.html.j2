@@ -1,0 +1,33 @@
+{% extends "_base.html" %}
+{% set title = '料金一覧' %}
+
+{% block main %}
+<div class="button_layout">
+    <div>
+        <a href="ryokin_search.html">＜ 戻る</a>
+    </div>
+</div>
+<table>
+    <tr>
+        <th>料金ID</th>
+        <th>料金名</th>
+        <th>月額料金(円/月)</th>
+        <th>適用開始日</th>
+        <th>適用終了日</th>
+    </tr>
+    <tr>
+        <td><a href="ryokin_edit.html">00001</a></td>
+        <td>基本料金</td>
+        <td>500</td>
+        <td>2000/01/01</td>
+        <td>―</td>
+    </tr>
+    <tr>
+        <td><a href="ryokin_edit.html">00002</a></td>
+        <td>追加オプションA</td>
+        <td>100</td>
+        <td>2000/01/01</td>
+        <td>―</td>
+    </tr>
+</table>
+{% endblock %}

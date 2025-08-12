@@ -1,0 +1,26 @@
+{% extends "_base.html" %}
+{% set title = '料金検索' %}
+
+{% block main %}
+<form action="ryokin_result.html" method="post">
+    <div class="form_wrapper">
+        <div class="label">
+            <label for="cond_ryokin_id">料金ID</label>
+        </div>
+        <div class="input_item">
+            <input type="text" id="cond_ryokin_id" name="cond_ryokin_id">
+        </div>
+        <div class="label">
+            <label for="cond_ryokin_name">料金名</label>
+        </div>
+        <div class="input_item">
+            <input type="text" id="cond_ryokin_name" name="cond_ryokin_name">
+        </div>
+        <div class="label">
+        </div>
+        <div class="input_item">
+            <input type="submit" value="検索">
+        </div>    
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "_base.html" %}
+{% set title = '料金編集' %}
+
+
+{% block main %}
+<form action="kanyu_edit.html" method="post">
+    <form action="kanyu_result.html" method="post">
+        <div class="form_wrapper">
+            <div class="label">
+                <label for="ryokin_id">料金ID</label>
+            </div>
+            <div class="input_item">
+                <input type="text" id="ryokin_id" name="ryokin_id">
+            </div>
+            <div class="label">
+                <label for="ryokin_name">料金名</label>
+            </div>
+            <div class="input_item">
+                <input type="text" id="ryokin_name" name="ryokin_name">
+            </div>
+            <div class="label">
+                <label for="ryokin">月額料金</label>
+            </div>
+            <div class="input_item">
+                <input type="number" id="ryokin" name="ryokin">
+            </div>
+            <div class="label">
+                <label for="start_date">適用開始日</label>
+            </div>
+            <div class="input_item">
+                <input type="date" id="start_date" name="start_date">
+            </div>
+            <div class="label">
+                <label for="retired_date">適用終了日</label>
+            </div>
+            <div class="input_item">
+                <input type="date" id="retired_date" name="retired_date">
+            </div>
+            <div class="label">
+            </div>
+            <div class="input_item">
+                <input type="submit" value="登録">
+            </div>    
+        </div>
+    </form>
+</form>
+{% endblock %}
