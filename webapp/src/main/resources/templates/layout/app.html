@@ -34,11 +34,16 @@
               </a>
             </li>
           </ul>
-        </div>
+        </div>      
+        
         <!--/* ナビバー - 右端*/-->
+      <div>
         <ul class="navbar-nav">
           <li class="nav-item">
             <!--/* ログアウトリンク */-->
+            <div sec:authorize="isAuthenticated()">
+              <a href="/logout" class="btn btn-outline-danger">ログアウト</a>
+            </div>
           </li>
         </ul>
       </div>
