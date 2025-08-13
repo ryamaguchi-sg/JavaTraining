@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html th:replace="~{layout/app :: layout(${isAddMode}?'加入者新規追加':'加入者編集', ~{::content}, 'member')}">
+<html th:replace="~{layout/app :: layout(${isAddMode}?'加入者新規追加':'加入者編集', ~{::content}, 'member')}"
+xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:fragment="content">
     <!--/*
         加入者情報編集画面
