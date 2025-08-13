@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
 import com.s_giken.training.webapp.model.entity.Member;
 
 @Repository
@@ -54,17 +55,42 @@ public class MemberRepositoryImpl implements MemberRepository {
     @Override
     public List<Member> findByMailLike(String mail) {
         String sql = "SELECT * FROM T_MEMBER WHERE mail like ?";
-        Object[] args = { mail };
+        Object[] args = { "%" + mail + "%" };
         int[] argTypes = { Types.VARCHAR };
         List<Member> result = jdbcTemplate.query(sql, args, argTypes, rowMapper);
         return result;
     }
 
+
+    /**
+     * 名前の一部にマッチするの加入者情報リストを取得する。
+     */
+    @Override
+    public List<Member> findByNameLike(String name){
+    	 String sql = "SELECT * FROM T_MEMBER WHERE name LIKE ?";
+    	 Object[] args = { "%" + name + "%" };
+    	 int[] argTypes = {Types.VARCHAR };
+    	   List<Member> result = jdbcTemplate.query(sql, args, argTypes, rowMapper);
+           return result;
+    }
+    
+    /**
+     * メールアドレスと名前の一部にマッチするの加入者情報リストを取得する。
+     */
+    @Override
+    public List<Member> findByMailAndNameLike(String mail, String name){
+    	 String sql = "SELECT * FROM T_MEMBER WHERE mail LIKE ? AND name LIKE ?";
+    	 Object[] args = { "%" + mail + "%",  "%" + name + "%" };
+    	 int[] argTypes = {Types.VARCHAR, Types.VARCHAR };
+    	 return jdbcTemplate.query(sql, args, argTypes, rowMapper );
+    }
+    
     /**
      * 加入者情報をデータベースへ登録する。
      * 
      * @param member 追加するMemberオブジェクト。 memberIdプロパティの値は null としなくてはならない
      * @return 処理した件数
+     *
      */
     @Override
     public int add(Member member) {
