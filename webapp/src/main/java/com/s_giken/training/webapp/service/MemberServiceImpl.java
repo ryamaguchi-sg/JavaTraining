@@ -55,19 +55,20 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public List<Member> findByConditions(MemberSearchCondition memberSearchCondition) {
-        // TODO: 氏名検索用メソッドを呼び出すように修正
         String mail = memberSearchCondition.getMail();
         String name = memberSearchCondition.getName();
-    	if(mail.equals("")&&name.equals("")) {
-    		return memberRepository.findAll();
-    	}else if(!mail.equals("")&&name.equals("")) {
-    		return memberRepository.findByMailLike(mail);
-    	}else if(mail.equals("")&&!name.equals("")){
-    		return memberRepository.findByNameLike(name);
-    	}else {
-    		return memberRepository.findByMailAndNameLike(mail, name);
-    	}
+
+        if (mail == null || mail.isEmpty()) {
+            mail = "";
+        }
+        if (name == null || name.isEmpty()) {
+            name = "";
+        }
+
+        return memberRepository.findByMailContainingAndNameContaining(mail, name);
     }
+
+    
 
     /**
      * 加入者を登録する

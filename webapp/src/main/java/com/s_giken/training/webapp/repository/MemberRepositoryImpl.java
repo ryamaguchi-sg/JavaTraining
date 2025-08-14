@@ -78,7 +78,7 @@ public class MemberRepositoryImpl implements MemberRepository {
      * メールアドレスと名前の一部にマッチするの加入者情報リストを取得する。
      */
     @Override
-    public List<Member> findByMailAndNameLike(String mail, String name){
+    public List<Member> findByMailContainingAndNameContaining(String mail, String name){
     	 String sql = "SELECT * FROM T_MEMBER WHERE mail LIKE ? AND name LIKE ?";
     	 Object[] args = { "%" + mail + "%",  "%" + name + "%" };
     	 int[] argTypes = {Types.VARCHAR, Types.VARCHAR };
