@@ -15,5 +15,17 @@ CREATE TABLE IF NOT EXISTS T_MEMBER (
     created_at	    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at	    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (member_id)
-)
+);
 
+CREATE SEQUENCE IF NOT EXISTS t_charge_seq AS BIGINT START WITH 1 INCREMENT BY 1 NO CYCLE NO CACHE; 
+
+CREATE TABLE IF NOT EXISTS T_CHARGE (
+    charge_id       BIGINT, 
+    name            VARCHAR(127) NOT NULL,
+    amount            NUMERIC(9) NOT NULL,
+    start_date         DATE NOT NULL,
+    end_date        DATE, 
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (charge_id)
+);
