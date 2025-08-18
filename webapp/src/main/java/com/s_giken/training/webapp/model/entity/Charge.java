@@ -24,12 +24,12 @@ public class Charge {
 	@Nullable
 	private Long chargeId;
 
-	@Size(min=１, max=64, message="1文字から64文字で指定してください。")
+	@Size(min = １, max = 127, message = "1文字から127文字で指定してください。")
 	@NotBlank
 	private String name;
 
-	@Min(value=1, message="正の整数を入力してください。")
-	@Digits(integer = 10, fraction = 0)
+	@Min(value = 1, message = "正の整数を入力してください。")
+	@Digits(integer = 9, fraction = 0)
 	@NotNull
 	private BigDecimal amount;
 
