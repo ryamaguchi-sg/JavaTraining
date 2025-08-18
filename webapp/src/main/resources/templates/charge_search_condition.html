@@ -5,7 +5,7 @@ xmlns:th="http://www.thymeleaf.org"
      
 <div th:fragment="content">
   <!--/* 料金情報検索画面 */-->
-  <form th:action="@{/charge/search}" th:object="${chargeSearchCondition}" method="POST">
+  <form method="POST" th:object="${chargeSearchCondition}">
     <!--/* 料金名 */-->
     <div class="mb-3 row">
       <label class="col-sm-2 col-form-label" for="name">料金名</label>
@@ -17,12 +17,15 @@ xmlns:th="http://www.thymeleaf.org"
 
     <!--/* ここにテキストフォームを設置 */-->
     <div class="mb-3 row justify-content-between">
-      <div class="col-auto">
-        <button type="submit" class="btn btn-primary">検索</button>
-        <button type="submit" class="btn btn-primary">登録</button>
+
+        <div class="mb-3 d-flex gap-2">
+
+        <button type="submit" class="btn btn-primary" formaction="/charge/search">検索</button>
+        <a class="btn btn-link" th:href="@{/charge/add}">登録</a>
+        </div>
       </div>
-    </div>
   </form>
 </div>
+
 
 </html>
