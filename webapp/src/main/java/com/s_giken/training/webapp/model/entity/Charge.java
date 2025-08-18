@@ -24,7 +24,7 @@ public class Charge {
 	@Nullable
 	private Long chargeId;
 
-	@Size(min=4, max=16, message="1文字から64文字で指定してください。")
+	@Size(min=１, max=64, message="1文字から64文字で指定してください。")
 	@NotBlank
 	private String name;
 
