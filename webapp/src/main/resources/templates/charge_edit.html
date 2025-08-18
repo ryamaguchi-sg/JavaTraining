@@ -10,32 +10,33 @@ xmlns:th="http://www.thymeleaf.org"
         <span th:text="${message}"></span>
     </div>
     <form th:action="${isAddMode}?@{/charge/add}:@{/charge/update}" th:object="${charge}" method="POST">
-        <div class="mb-3 row">
+      <input type="hidden" th:field="*{chargeId}"/>
+          <div class="mb-3 row">
             <label class="col-sm-2 col-form-label" for="name">料金名</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" th:field="*{name}" maxlength="64">
-                <span class="text-danger" th:if="${showErrors != null and showErrors and #fields.hasErrors('name')}" th:errors="*{name}"></span>
+                <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
             </div>
         </div>
         <div class="mb-3 row">
             <label class="col-sm-2 col-form-label" for="amount">料金</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" th:field="*{amount}">
-                <span class="text-danger" th:if="${showErrors != null and showErrors and #fields.hasErrors('amount')}" th:errors="*{amount}"></span>
+                <span class="text-danger" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></span>
             </div>
         </div>
         <div class="mb-3 row">
             <label class="col-sm-2 col-form-label" for="startDate">適用開始日</label>
             <div class="col-sm-10">
                 <input type="date" class="form-control" th:field="*{startDate}" name="joining_date">
-                <span class="text-danger" th:if="${showErrors != null and showErrors and #fields.hasErrors('startDate')}" th:errors="*{startDate}"></span>
+                <span class="text-danger" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></span>
             </div>
         </div>
         <div class="mb-3 row">
             <label class="col-sm-2 col-form-label" for="endDate">適用終了日</label>
             <div class="col-sm-10">
                 <input type="date" class="form-control" th:field="*{endDate}">
-                <span class="text-danger" th:if="${showErrors != null and showErrors and #fields.hasErrors('endDate')}" th:errors="*{endDate}"></span>
+                <span class="text-danger" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></span>
             </div>
         </div>
         <div class="mb-3 row justify-content-between">
