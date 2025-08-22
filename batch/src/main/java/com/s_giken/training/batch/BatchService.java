@@ -1,6 +1,7 @@
 package com.s_giken.training.batch;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +52,7 @@ public class BatchService {
 	    	
 	    	List<Map<String,Object>>members = jdbcTemplate.queryForList(memberSql, targetDate.withDayOfMonth(targetDate.lengthOfMonth()),
 	    			targetDate.withDayOfMonth(1));
+	    	
 	    	logger.info("有効な加入者情報:) {}件",members.size());
 	    	
 	    	String chargeSql = """
@@ -84,7 +86,7 @@ public class BatchService {
 	    		
 	    		BigDecimal totalAmount = memberCharges.stream()
 	    				.map(c ->(BigDecimal)c.get("amount"))
-						.reduce(BigDecimal.ZERO, BigDecimal::add));
+						.reduce(BigDecimal.ZERO, BigDecimal::add);
 						
 				BigDecimal total = totalAmount
 						.multiply(BigDecimal.ONE.add(taxRate))

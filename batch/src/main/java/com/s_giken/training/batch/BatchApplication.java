@@ -17,6 +17,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class BatchApplication implements CommandLineRunner {
 	private final Logger logger = LoggerFactory.getLogger(BatchApplication.class);
 	private final JdbcTemplate jdbcTemplate;
+	private final BatchService batchService;
+	
 
 	/**
 	 * SpringBoot エントリポイント
@@ -32,7 +34,6 @@ public class BatchApplication implements CommandLineRunner {
 	 * 
 	 * @param jdbcTemplate SpringBootから注入される JdbcTemplate オブジェクト
 	 */
-	private final BatchService batchService;
 	
 	public BatchApplication(JdbcTemplate jdbcTemplate, BatchService batchService) {
 		this.jdbcTemplate = jdbcTemplate;
@@ -50,8 +51,8 @@ public class BatchApplication implements CommandLineRunner {
 
 		// TODO: ここにバッチ処理のコードを記述する
 		// - データベースからデータを取得する
-		if (args.length == 0) {
-			logger.error("年月（yyyyMM）を指定してください。");
+		if (args.length != 1) {
+			logger.error("年月（yyyyMM）を1つ指定してください。");
 			return;
 		}
 
@@ -65,20 +66,19 @@ public class BatchApplication implements CommandLineRunner {
 			LocalDate targetDate = LocalDate.parse(input, formatter);
 			logger.info("指定された年月：{}", targetDate);
 
-			//ここに対象年月データの抽出処理を記述する。
+			batchService.processBillingData(targetDate);
+			logger.info("バッチ処理が正常に完了しました。");
 
 		} catch (DateTimeParseException e) {
 			logger.error("年月の形式が正しくありません。yyyyMM", e);
-			throw e;
+		}catch(IllegalStateException e) {
+			logger.warn(e.getMessage());
+		}catch(Exception e) {
+		logger.error("予期せぬエラーが発生しました。",e);
 		}
+		
 
 		logger.info("-".repeat(40));
 
 	}
 	}
-	// - データを加工する
-	// - 加工したデータをデータベースに登録する
-
-	// ダミーコード
-	// 削除してください。
-
