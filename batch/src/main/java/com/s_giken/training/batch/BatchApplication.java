@@ -16,9 +16,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @SpringBootApplication
 public class BatchApplication implements CommandLineRunner {
 	private final Logger logger = LoggerFactory.getLogger(BatchApplication.class);
-	private final JdbcTemplate jdbcTemplate;
 	private final BatchService batchService;
-	
 
 	/**
 	 * SpringBoot エントリポイント
@@ -34,9 +32,8 @@ public class BatchApplication implements CommandLineRunner {
 	 * 
 	 * @param jdbcTemplate SpringBootから注入される JdbcTemplate オブジェクト
 	 */
-	
+
 	public BatchApplication(JdbcTemplate jdbcTemplate, BatchService batchService) {
-		this.jdbcTemplate = jdbcTemplate;
 		this.batchService = batchService;
 	}
 
@@ -71,14 +68,13 @@ public class BatchApplication implements CommandLineRunner {
 
 		} catch (DateTimeParseException e) {
 			logger.error("年月の形式が正しくありません。yyyyMM", e);
-		}catch(IllegalStateException e) {
+		} catch (IllegalStateException e) {
 			logger.warn(e.getMessage());
-		}catch(Exception e) {
-		logger.error("予期せぬエラーが発生しました。",e);
+		} catch (Exception e) {
+			logger.error("予期せぬエラーが発生しました。", e);
 		}
-		
 
 		logger.info("-".repeat(40));
 
 	}
-	}
+}
