@@ -86,27 +86,24 @@ public class BatchService {
 
 		logger.info("有効な料金情報:{}件", charges.size());//取得件数のログを出力する
 
-		//		String crossJoinSql = """
-		//				SELECT m.*, c.*
-		//				FROM T_MEMBER m
-		//				CROSS JOIN T_CHARGE c
-		//				WHERE m.start_date <= ?
-		//				AND(m.end_date IS NULL OR m.end_date >= ?)
-		//				AND(c.start_date <= ?)
-		//				AND(c.end_date IS NULL OR c.end_date >= ?)
-		//				""";
-		//		List<Map<String, Object>> memberChargePairs = jdbcTemplate.queryForList(
-		//				crossJoinSql,
-		//				lastDayOfMonth, firstDayOfMonth,
-		//				lastDayOfMonth, firstDayOfMonth);
-		//		logger.info("有効な加入者と有効な料金の組み合わせ:{}件", memberChargePairs.size());
-
-		//		Map<Long, List<Map<String, Object>>> groupedByMember = memberChargePairs.stream()
-		//				.collect(Collectors.groupingBy(row -> (Long) row.get("member_id")));
 		int billingDataCount = 0;
 		int billingDetailCount = 0;
 		BigDecimal taxRate = new BigDecimal("0.1");
 		BigDecimal taxMultiplier = new BigDecimal("1.1");
+
+		String insertBillingDataSql = """
+				INSERT INTO T_BILLING_DATA(
+				billing_ym,member_id, mail, name, address, start_date, end_date, payment_method,
+				amount,tax_ratio, total
+				)VALUES(?,?,?,?,?,?,?,?,?,?,?)
+				""";
+		String insertBillingDetailSql = """
+				INSERT INTO T_BILLING_DETAIL_DATA(
+					billing_ym, member_id, charge_id, name,
+					amount, start_date, end_date
+					)VALUES(?,?,?,?,?,?,?)
+					""";
+
 		//加入者一覧（members）から一人ずつ取り出して、memberという変数に格納するループ処理
 		for (Map<String, Object> member : members) {
 			Long memberId = (Long) member.get("member_id");
@@ -114,27 +111,6 @@ public class BatchService {
 			//該当する料金情報を抽出
 			List<Map<String, Object>> memberCharges = charges.stream()
 					.toList();
-
-			String insertBillingDataSql = """
-					INSERT INTO T_BILLING_DATA(
-					billing_ym,member_id, mail, name, address, start_date, end_date, payment_method,
-					amount,tax_ratio, total
-					)VALUES(?,?,?,?,?,?,?,?,?,?,?)
-					""";
-			String insertBillingDetailSql = """
-					INSERT INTO T_BILLING_DETAIL_DATA(
-						billing_ym, member_id, charge_id, name,
-						amount, start_date, end_date
-						)VALUES(?,?,?,?,?,?,?)
-						""";
-
-			//		for (Map.Entry<Long, List<Map<String, Object>>> entry : groupedByMember.entrySet()) {
-			//			Long memberId = entry.getKey();
-			//			List<Map<String, Object>> memberCharges = entry.getValue();
-			//
-			//			Map<String, Object> member = memberCharges.get(0);
-			//
-			//			BigDecimal total = calculateTotalWithTax(memberCharges, taxMultiplier);
 
 			Map<String, BigDecimal> amounts = calculateTotalWithTax(memberCharges, taxMultiplier);
 			BigDecimal totalAmount = amounts.get("totalAmount");
