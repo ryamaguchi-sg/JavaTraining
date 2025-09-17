@@ -53,6 +53,32 @@ public class ChargeRepositoryImpl implements ChargeRepository {
 		return jdbcTemplate.query(sql, args, argTypes, rowMapper);
 	}
 
+	private String convertToColumnName(String sortKey) {
+		return switch (sortKey) {
+		case "chargeId" -> "charge_id";
+		case "name" -> "name";
+		case "startDate" -> "start_date";
+		case "endDate" -> "end_date";
+		default -> "charge_id"; // デフォルト
+		};
+	}
+
+	@Override
+	public List<Charge> findByNameSorted(String name, String sortKey, String orderDirection) {
+		String columnName = convertToColumnName(sortKey);
+
+		// 並び順の安全チェック
+		if (!orderDirection.equalsIgnoreCase("asc") && !orderDirection.equalsIgnoreCase("desc")) {
+			orderDirection = "asc";
+		}
+
+		String sql = "SELECT * FROM T_CHARGE WHERE name LIKE ? ORDER BY " + columnName + " "
+				+ orderDirection;
+		Object[] args = { "%" + name + "%" };
+		int[] argTypes = { Types.VARCHAR };
+		return jdbcTemplate.query(sql, args, argTypes, rowMapper);
+	}
+
 	/**
 	 * 料金情報をデータベースへ登録する。
 	 */

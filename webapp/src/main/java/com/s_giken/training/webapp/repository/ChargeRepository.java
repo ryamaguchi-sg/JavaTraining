@@ -27,6 +27,8 @@ public interface ChargeRepository {
 	  */
 	public List<Charge> findByNameLike(String name);
 
+	List<Charge> findByNameSorted(String name, String sortKey, String orderDirection);
+
 	/**
 	 * 料金情報をデータベースへ登録する。
 	 * 

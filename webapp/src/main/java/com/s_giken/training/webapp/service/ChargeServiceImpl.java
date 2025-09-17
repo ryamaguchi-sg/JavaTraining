@@ -57,10 +57,16 @@ public class ChargeServiceImpl implements ChargeService {
 	@Override
 	public List<Charge> findByConditions(ChargeSearchCondition chargeSearchCondition) {
 		String name = chargeSearchCondition.getName();
-		if (name == null || name.isBlank()) {
-			return chargeRepository.findAll(); // 全件取得
+		// 並び替え項目と順序の取得
+		String sortKey = chargeSearchCondition.getSortKey();
+		String orderDirection = chargeSearchCondition.getOrderDirection();
+
+		if (name == null) {
+			name = "";
 		}
-		return chargeRepository.findByNameLike(name);
+
+		return chargeRepository.findByNameSorted(name, sortKey, orderDirection);
+
 	}
 
 	/**

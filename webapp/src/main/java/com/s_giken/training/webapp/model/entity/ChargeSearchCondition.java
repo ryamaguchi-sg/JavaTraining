@@ -11,4 +11,7 @@ public class ChargeSearchCondition {
 	// 氏名検索用
 	private String name;
 
+	private String sortKey;
+	private String orderDirection;
+
 }

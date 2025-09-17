@@ -13,155 +13,182 @@ import com.s_giken.training.webapp.model.entity.Member;
 @Repository
 public class MemberRepositoryImpl implements MemberRepository {
 
-    private final JdbcTemplate jdbcTemplate;
-    private final RowMapper<Member> rowMapper;
+	private final JdbcTemplate jdbcTemplate;
+	private final RowMapper<Member> rowMapper;
 
-    public MemberRepositoryImpl(JdbcTemplate jdbcTemplate, RowMapper<Member> rowMapper) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.rowMapper = rowMapper;
-    }
+	public MemberRepositoryImpl(JdbcTemplate jdbcTemplate, RowMapper<Member> rowMapper) {
+		this.jdbcTemplate = jdbcTemplate;
+		this.rowMapper = rowMapper;
+	}
 
-    /**
-     * 加入者情報をすべて取得する。
-     * 
-     * @return Memberオブジェクトのリスト
-     */
-    @Override
-    public List<Member> findAll() {
-        String sql = "SELECT * FROM T_MEMBER";
-        List<Member> result = jdbcTemplate.query(sql, rowMapper);
-        return result;
-    }
+	/**
+	 * 加入者情報をすべて取得する。
+	 * 
+	 * @return Memberオブジェクトのリスト
+	 */
+	@Override
+	public List<Member> findAll() {
+		String sql = "SELECT * FROM T_MEMBER";
+		List<Member> result = jdbcTemplate.query(sql, rowMapper);
+		return result;
+	}
 
-    /**
-     * メールアドレスの一部にマッチするの加入者情報リストを取得する。
-     * 
-     * @return Optional型の Memberオブジェクト
-     */
-    @Override
-    public Optional<Member> findById(Long id) {
-        String sql = "SELECT * FROM T_MEMBER WHERE member_id = ?";
-        Object[] args = { id };
-        int[] argTypes = { Types.BIGINT };
-        Member member = jdbcTemplate.queryForObject(sql, args, argTypes, rowMapper);
-        return Optional.ofNullable(member);
-    }
+	/**
+	 * メールアドレスの一部にマッチするの加入者情報リストを取得する。
+	 * 
+	 * @return Optional型の Memberオブジェクト
+	 */
+	@Override
+	public Optional<Member> findById(Long id) {
+		String sql = "SELECT * FROM T_MEMBER WHERE member_id = ?";
+		Object[] args = { id };
+		int[] argTypes = { Types.BIGINT };
+		Member member = jdbcTemplate.queryForObject(sql, args, argTypes, rowMapper);
+		return Optional.ofNullable(member);
+	}
 
-    /**
-     * メールアドレスの一部にマッチするの加入者情報リストを取得する。
-     * 
-     * @return Optional型の Memberオブジェクト
-     */
-    @Override
-    public List<Member> findByMailLike(String mail) {
-        String sql = "SELECT * FROM T_MEMBER WHERE mail like ?";
-        Object[] args = { "%" + mail + "%" };
-        int[] argTypes = { Types.VARCHAR };
-        List<Member> result = jdbcTemplate.query(sql, args, argTypes, rowMapper);
-        return result;
-    }
+	/**
+	 * メールアドレスの一部にマッチするの加入者情報リストを取得する。
+	 * 
+	 * @return Optional型の Memberオブジェクト
+	 */
+	@Override
+	public List<Member> findByMailLike(String mail) {
+		String sql = "SELECT * FROM T_MEMBER WHERE mail like ?";
+		Object[] args = { "%" + mail + "%" };
+		int[] argTypes = { Types.VARCHAR };
+		List<Member> result = jdbcTemplate.query(sql, args, argTypes, rowMapper);
+		return result;
+	}
 
+	/**
+	 * 名前の一部にマッチするの加入者情報リストを取得する。
+	 */
+	@Override
+	public List<Member> findByNameLike(String name) {
+		String sql = "SELECT * FROM T_MEMBER WHERE name LIKE ?";
+		Object[] args = { "%" + name + "%" };
+		int[] argTypes = { Types.VARCHAR };
+		List<Member> result = jdbcTemplate.query(sql, args, argTypes, rowMapper);
+		return result;
+	}
 
-    /**
-     * 名前の一部にマッチするの加入者情報リストを取得する。
-     */
-    @Override
-    public List<Member> findByNameLike(String name){
-    	 String sql = "SELECT * FROM T_MEMBER WHERE name LIKE ?";
-    	 Object[] args = { "%" + name + "%" };
-    	 int[] argTypes = {Types.VARCHAR };
-    	   List<Member> result = jdbcTemplate.query(sql, args, argTypes, rowMapper);
-           return result;
-    }
-    
-    /**
-     * メールアドレスと名前の一部にマッチするの加入者情報リストを取得する。
-     */
-    @Override
-    public List<Member> findByMailContainingAndNameContaining(String mail, String name){
-    	 String sql = "SELECT * FROM T_MEMBER WHERE mail LIKE ? AND name LIKE ?";
-    	 Object[] args = { "%" + mail + "%",  "%" + name + "%" };
-    	 int[] argTypes = {Types.VARCHAR, Types.VARCHAR };
-    	 return jdbcTemplate.query(sql, args, argTypes, rowMapper );
-    }
-    
-    /**
-     * 加入者情報をデータベースへ登録する。
-     * 
-     * @param member 追加するMemberオブジェクト。 memberIdプロパティの値は null としなくてはならない
-     * @return 処理した件数
-     *
-     */
-    @Override
-    public int add(Member member) {
-        Long memberId = member.getMemberId();
-        if (memberId == null) {
-            memberId = jdbcTemplate.queryForObject("SELECT NEXT VALUE FOR t_member_seq", Long.class);
-            member.setMemberId(memberId);
-        }
+	/**
+	 * メールアドレスと名前の一部にマッチするの加入者情報リストを取得する。
+	 */
+	@Override
+	public List<Member> findByMailContainingAndNameContaining(String mail, String name) {
+		String sql = "SELECT * FROM T_MEMBER WHERE mail LIKE ? AND name LIKE ?";
+		Object[] args = { "%" + mail + "%", "%" + name + "%" };
+		int[] argTypes = { Types.VARCHAR, Types.VARCHAR };
+		return jdbcTemplate.query(sql, args, argTypes, rowMapper);
+	}
 
-        String sql = """
-                        INSERT INTO T_MEMBER (member_id, mail, name, address, start_date, end_date, payment_method, created_at, modified_at)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-                """;
-        int processed_count = jdbcTemplate.update(
-                sql,
-                memberId,
-                member.getMail(),
-                member.getName(),
-                member.getAddress(),
-                member.getStartDate(),
-                member.getEndDate(),
-                member.getPaymentMethod().getCode());
+	private String convertToColumnName(String sortKey) {
+		return switch (sortKey) {
+		case "memberId" -> "member_id";
+		case "mail" -> "mail";
+		case "name" -> "name";
+		case "startDate" -> "start_date";
+		case "endDate" -> "end_date";
+		case "paymentMethod" -> "payment_method";
+		default -> "member_id"; // デフォルト
+		};
+	}
 
-        return processed_count;
-    }
+	@Override
+	public List<Member> findByMailAndNameSorted(String mail, String name, String sortKey, String orderDirection) {
+		String columnName = convertToColumnName(sortKey);
 
-    /**
-     * データベースの加入者情報を更新する。
-     * 
-     * @param member 更新するMemberオブジェクト。 memberIdプロパティには値が設定されている必要がある。
-     * @return 処理した件数
-     */
-    @Override
-    public int update(Member member) {
-        String sql = """
-                    UPDATE T_MEMBER
-                    SET
-                        mail = ?,
-                        name = ?,
-                        address = ?,
-                        start_date = ?,
-                        end_date = ?,
-                        payment_method = ?,
-                        modified_at = CURRENT_TIMESTAMP
-                    WHERE member_id = ?
-                """;
-        int processed_count = jdbcTemplate.update(
-                sql,
-                member.getMail(),
-                member.getName(),
-                member.getAddress(),
-                member.getStartDate(),
-                member.getEndDate(),
-                member.getPaymentMethod().getCode(),
-                member.getMemberId());
+		// 並び順の安全チェック
+		if (!orderDirection.equalsIgnoreCase("asc") && !orderDirection.equalsIgnoreCase("desc")) {
+			orderDirection = "asc";
+		}
 
-        return processed_count;
-    }
+		String sql = "SELECT * FROM T_MEMBER WHERE mail LIKE ? AND name LIKE ? ORDER BY " + columnName + " "
+				+ orderDirection;
+		Object[] args = { "%" + mail + "%", "%" + name + "%" };
+		int[] argTypes = { Types.VARCHAR, Types.VARCHAR };
+		return jdbcTemplate.query(sql, args, argTypes, rowMapper);
+	}
 
-    /**
-     * データベースから指定した加入者IDの加入者情報を削除する。
-     * 
-     * @param id 加入者ID
-     * @return 処理した件数
-     */
-    @Override
-    public int deleteById(Long id) {
-        String sql = "DELETE FROM T_MEMBER WHERE member_id = ?";
+	/**
+	 * 加入者情報をデータベースへ登録する。
+	 * 
+	 * @param member 追加するMemberオブジェクト。 memberIdプロパティの値は null としなくてはならない
+	 * @return 処理した件数
+	 *
+	 */
+	@Override
+	public int add(Member member) {
+		Long memberId = member.getMemberId();
+		if (memberId == null) {
+			memberId = jdbcTemplate.queryForObject("SELECT NEXT VALUE FOR t_member_seq", Long.class);
+			member.setMemberId(memberId);
+		}
 
-        int processed_count = jdbcTemplate.update(sql, id);
+		String sql = """
+				        INSERT INTO T_MEMBER (member_id, mail, name, address, start_date, end_date, payment_method, created_at, modified_at)
+				        VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+				""";
+		int processed_count = jdbcTemplate.update(
+				sql,
+				memberId,
+				member.getMail(),
+				member.getName(),
+				member.getAddress(),
+				member.getStartDate(),
+				member.getEndDate(),
+				member.getPaymentMethod().getCode());
 
-        return processed_count;
-    }
+		return processed_count;
+	}
+
+	/**
+	 * データベースの加入者情報を更新する。
+	 * 
+	 * @param member 更新するMemberオブジェクト。 memberIdプロパティには値が設定されている必要がある。
+	 * @return 処理した件数
+	 */
+	@Override
+	public int update(Member member) {
+		String sql = """
+				    UPDATE T_MEMBER
+				    SET
+				        mail = ?,
+				        name = ?,
+				        address = ?,
+				        start_date = ?,
+				        end_date = ?,
+				        payment_method = ?,
+				        modified_at = CURRENT_TIMESTAMP
+				    WHERE member_id = ?
+				""";
+		int processed_count = jdbcTemplate.update(
+				sql,
+				member.getMail(),
+				member.getName(),
+				member.getAddress(),
+				member.getStartDate(),
+				member.getEndDate(),
+				member.getPaymentMethod().getCode(),
+				member.getMemberId());
+
+		return processed_count;
+	}
+
+	/**
+	 * データベースから指定した加入者IDの加入者情報を削除する。
+	 * 
+	 * @param id 加入者ID
+	 * @return 処理した件数
+	 */
+	@Override
+	public int deleteById(Long id) {
+		String sql = "DELETE FROM T_MEMBER WHERE member_id = ?";
+
+		int processed_count = jdbcTemplate.update(sql, id);
+
+		return processed_count;
+	}
 }

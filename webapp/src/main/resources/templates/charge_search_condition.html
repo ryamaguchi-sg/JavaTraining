@@ -14,7 +14,28 @@ xmlns:th="http://www.thymeleaf.org"
       </div>
     </div>
 
+    <!-- 並び替え項目と並び順 -->
+      <div class="mb-3 row">
+        <label class="col-sm-2 col-form-label" for="sortKey">並び替え</label>
+        <div class="col-sm-3">
+            <select th:field="*{sortKey}" class="form-select">
+          <option value="chargeId">料金ID</option>
+          <option value="name">料金名</option>
+          <option value="startDate">適用開始日</option>
+          <option value="endDate">適用終了日</option>
+        </select>
+        </div>
 
+        <div class="col-sm-3">
+            <select th:field="*{orderDirection}" class="form-select">
+          <option value="asc">昇順</option>
+                  <option value="desc">降順</option>
+         </select>
+         </div>
+
+       </div>
+    
+    
     <!--/* ここにテキストフォームを設置 */-->
     <div class="mb-3 row justify-content-between">
 
