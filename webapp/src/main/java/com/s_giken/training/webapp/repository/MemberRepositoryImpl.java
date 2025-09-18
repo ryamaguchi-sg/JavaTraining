@@ -92,7 +92,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 		case "startDate" -> "start_date";
 		case "endDate" -> "end_date";
 		case "paymentMethod" -> "payment_method";
-		default -> "member_id"; // デフォルト
+		default -> throw new IllegalArgumentException("不正な並び替え項目です: " + sortKey);
 		};
 	}
 
@@ -102,7 +102,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 
 		// 並び順の安全チェック
 		if (!orderDirection.equalsIgnoreCase("asc") && !orderDirection.equalsIgnoreCase("desc")) {
-			orderDirection = "asc";
+			throw new IllegalArgumentException("不正な並び順です: " + orderDirection);
 		}
 
 		String sql = "SELECT * FROM T_MEMBER WHERE mail LIKE ? AND name LIKE ? ORDER BY " + columnName + " "

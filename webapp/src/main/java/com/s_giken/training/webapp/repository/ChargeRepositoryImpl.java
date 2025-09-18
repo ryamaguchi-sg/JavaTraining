@@ -57,9 +57,11 @@ public class ChargeRepositoryImpl implements ChargeRepository {
 		return switch (sortKey) {
 		case "chargeId" -> "charge_id";
 		case "name" -> "name";
+		case "amount" -> "amount";
 		case "startDate" -> "start_date";
 		case "endDate" -> "end_date";
-		default -> "charge_id"; // デフォルト
+		default -> throw new IllegalArgumentException("不正な並び替え項目です: " + sortKey);
+
 		};
 	}
 
@@ -69,7 +71,7 @@ public class ChargeRepositoryImpl implements ChargeRepository {
 
 		// 並び順の安全チェック
 		if (!orderDirection.equalsIgnoreCase("asc") && !orderDirection.equalsIgnoreCase("desc")) {
-			orderDirection = "asc";
+			throw new IllegalArgumentException("不正な並び順です: " + orderDirection);
 		}
 
 		String sql = "SELECT * FROM T_CHARGE WHERE name LIKE ? ORDER BY " + columnName + " "
