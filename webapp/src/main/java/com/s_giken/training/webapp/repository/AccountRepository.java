@@ -1,30 +1,30 @@
 package com.s_giken.training.webapp.repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import com.s_giken.training.webapp.model.entity.Account;
 
+@Repository
 public class AccountRepository {
 
-	private final Connection connection;
+	private final JdbcTemplate jdbcTemplate;
 
-	public AccountRepository(Connection connection) {
-		this.connection = connection;
+	public AccountRepository(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	public Account findByName(String name) throws SQLException {
+	public Account findByName(String name) {
 		String sql = "SELECT name, password FROM T_ACCOUNT WHERE name = ?";
-		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-			stmt.setString(1, name);
-			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-				return new Account(rs.getString("name"), rs.getString("password"));
-			} else {
-				return null;
-			}
-		}
+		RowMapper<Account> rowMapper = (rs, rowNum) -> new Account(
+				rs.getString("name"),
+				rs.getString("password"));
+
+		return jdbcTemplate.query(sql, rowMapper, name)
+				.stream()
+				.findFirst()
+				.orElse(null);
+
 	}
 }

@@ -1,14 +1,14 @@
 package com.s_giken.training.webapp.service;
 
-import java.sql.SQLException;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.s_giken.training.webapp.model.entity.Account;
 import com.s_giken.training.webapp.repository.AccountRepository;
 
+@Service
 public class AccountUserDetailsService implements UserDetailsService {
 
 	private final AccountRepository accountRepository;
@@ -31,7 +31,7 @@ public class AccountUserDetailsService implements UserDetailsService {
 					.roles("USER")
 					.build();
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			throw new UsernameNotFoundException("Database error", e);
 		}
 	}

@@ -1,23 +1,14 @@
 package com.s_giken.training.webapp.config;
 
-import java.sql.Connection;
-
-import javax.sql.DataSource;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
-
-import com.s_giken.training.webapp.repository.AccountRepository;
-import com.s_giken.training.webapp.service.AccountUserDetailsService;
 
 /**
  * Spring Securityの設定クラス
@@ -64,20 +55,6 @@ public class SecurityConfig {
 						.anyRequest().authenticated());
 
 		return http.build();
-	}
-
-	/**
-	 * ログインユーザー情報を設定する
-	 *
-	 * ※パスワードはハッシュ化せずにそのまま設定
-	 *
-	 * @return ログインユーザー情報
-	 */
-	@Bean
-	UserDetailsService users(DataSource dataSource) {
-		Connection connection = DataSourceUtils.getConnection(dataSource);
-		AccountRepository accountRepository = new AccountRepository(connection);
-		return new AccountUserDetailsService(accountRepository);
 	}
 
 	/**
