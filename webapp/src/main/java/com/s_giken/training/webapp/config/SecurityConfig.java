@@ -49,7 +49,10 @@ public class SecurityConfig {
 										.matcher("/image/**"),
 								PathPatternRequestMatcher
 										.withDefaults()
-										.matcher("/css/**"))
+										.matcher("/css/**"),
+								PathPatternRequestMatcher
+										.withDefaults()
+										.matcher("/login/signup"))
 						.permitAll()
 						// 特例以外のURLは要認証
 						.anyRequest().authenticated());
